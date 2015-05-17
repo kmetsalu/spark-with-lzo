@@ -1,44 +1,59 @@
 # Install spark with native libraries and lzo file support.
 
-# Navigate to user folder 
-cd /home/user
+#### Navigate to user folder 
 
-# Clone git repo with some peliminary configurations
-git clone git@github.com:kmetsalu/spark-with-lzo.git spark-with-lzo
-cd /home/user/spark-with-lzo
+    cd /home/user
 
-# Export BASE_DIR variable for easier use.
-export $BASE_DIR=`pwd`
+#### Clone git repo with some peliminary configurations
 
-# Download Spark 1.2.0
-wget http://www.apache.org/dyn/closer.cgi/spark/spark-1.2.0/spark-1.2.0-bin-hadoop2.4.tgz
-tar –xzvf spark-1.2.0-bin-hadoop2.4.tgz
-mv spark-1.2.0-bin-hadoop2.4 spark
+    git clone git@github.com:kmetsalu/spark-with-lzo.git spark-with-lzo
+    cd /home/user/spark-with-lzo
 
-# Download hadoop-lzo
-git clone https://github.com/twitter/hadoop-lzo.git hadoop-lzo
-cd $BASE_DIR/hadoop-lzo
-git checkout release-0.4.19
+#### Export BASE_DIR variable for easier use.
 
-# ===
-# Build native libraries according to hadoop-lzo instructions
-# After build there should be target directory in hadoop-lzo folder
-# ===
+    export $BASE_DIR=`pwd`
 
-# Make new directory to store current compilaton
-mkdir $BASE_DIR/hadoop-lzo/current
+#### Download Spark 1.2.0
 
-# Copy required native libraries to created directory for Linux 
-# folder name within native directory differs, but everything else
-# is the same
-cp –R $BASE_DIR/hadoop-lzo/target/native/Mac_OS_X-x86_64-64/lib/ $BASE_DIR/hadoop-lzo/current/native
+    wget http://www.apache.org/dyn/closer.cgi/spark/spark-1.2.0/spark-1.2.0-bin-hadoop2.4.tgz
+    tar –xzvf spark-1.2.0-bin-hadoop2.4.tgz
+    mv spark-1.2.0-bin-hadoop2.4 spark
 
-# Copy created jar
-cp $BASE_DIR/hadoop-lzo/target/hadoop-lzo-0.4.19.jar $BASE_DIR/hadoop-lzo/current
+#### Download hadoop-lzo
 
-# Copy configuration files to spark
-cd $BASE_DIR
-cp $BASE_DIR/spark-conf/conf/* $BASE_DIR/spark/conf/
-mv $BASE_DIR/spark/sbin/spark-config.sh{,.backup}
-cp $BASE_DIR/spark-cond/sbin/* $BASE_DIR/spark/sbin/
-# Native libraries setup should be now working
+    git clone https://github.com/twitter/hadoop-lzo.git hadoop-lzo
+    cd $BASE_DIR/hadoop-lzo
+    git checkout release-0.4.19
+
+#### Build hadoop-lzo native libraries
+
+    # Build native libraries according to hadoop-lzo instructions
+    # After build there should be target directory in hadoop-lzo folder
+    # Make new directory to store current compilaton
+
+    mkdir $BASE_DIR/hadoop-lzo/current
+
+    # Copy required native libraries to created directory for Linux 
+    # folder name within native directory differs, but everything else
+    # is the same
+
+    cp –R $BASE_DIR/hadoop-lzo/target/native/Mac_OS_X-x86_64-64/lib/ $BASE_DIR/hadoop-lzo/current/native
+
+    # Copy created jar
+    cp $BASE_DIR/hadoop-lzo/target/hadoop-lzo-0.4.19.jar $BASE_DIR/hadoop-lzo/current
+
+#### Copy configuration files to spark folder
+
+    cd $BASE_DIR
+    cp $BASE_DIR/spark-conf/conf/* $BASE_DIR/spark/conf/
+    mv $BASE_DIR/spark/sbin/spark-config.sh{,.backup}
+    cp $BASE_DIR/spark-cond/sbin/* $BASE_DIR/spark/sbin/
+    
+    # Native libraries setup should be now working
+
+#### To make $BASE_DIR permanent
+
+    # Modify files in and uncomment and correct BASE_DIR variable
+
+    vi $BASE_DIR/spark-conf/conf/spark-env.sh
+    vi $BASE_DIR/spark-conf/sbin/spark-config.sh
